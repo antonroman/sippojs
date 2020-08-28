@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Contacto Banco Azteca</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id='target'></div>
+
+    <script src='https://bazdigital.com/sippohub/c2c/click2call-0.6.0.js'></script>
+    <!-- <button onclick='call()'>Pulse para hablar con agente</button> -->
+
+    <script>
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const agent = urlParams.get('agent');
+
+      let sippoUri = 'https://bazdigital.com/sippohub/';
+      let target = document.getElementById('target');
+      let c2c = new Click2Call(sippoUri, target);
+
+      function call() {
+        let anonymousDomain = '@quobis';
+        c2c.register(anonymousDomain).then( () => {
+	/*Event callback to clean the session properly when teh call is finished*/
+          c2c.on('callFinished', () => c2c.deregister());
+          c2c.call(agent+'@quobis');
+        });
+      }
+
+      call();
+
+    </script>
+  </body>
+</html>
